@@ -54,8 +54,26 @@ $(document).ready(function(){
 
 			}
 		})
+	})
 
+	$(document).on("click",".add-to-cart",function(aobj){
 
+		aobj.preventDefault();
+		var id= $(this).attr("for");
+		//alert(id);
+
+		//alert("p_id="+id)
+		$.ajax({
+			type:"post",
+			data:"proid="+id,
+			url: curl+"cart",
+			success:function(response){
+
+				alert(response);
+				//$(".features_items").html(response)
+
+			}
+		})
 
 	})
 })
