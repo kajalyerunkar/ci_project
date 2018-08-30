@@ -1,5 +1,14 @@
 $(document).ready(function(){
 
+	if(localStorage.cartcnt){
+
+		$(".cartcnt").html(localStorage.cartcnt)
+	}
+	else{
+
+		$(".cartcnt").html(0);
+	}
+
 	//console.log(curl)
 
 	$.get(curl+ "get_categories", function(data, status){
@@ -14,7 +23,7 @@ $(document).ready(function(){
 	$.get(curl+ "get_brands", function(data, status){
 
 		
-		//console.log(status)
+		console.log(status)
 		if(status=="success"){
 
 			//console.log(data)
@@ -69,11 +78,30 @@ $(document).ready(function(){
 			url: curl+"cart",
 			success:function(response){
 
-				alert(response);
+				//alert(response);
 				//$(".features_items").html(response)
+				rans = response.split("#")
+				$(".cartcnt").html(rans[0])
+				localStorage.cartcnt = rans[0];
+				alert(rans[1]);
 
 			}
 		})
 
 	})
+
+	//cart check
+
+	$.get(curl+ "get_cart_products", function(data, status){
+
+		//console.log(status)
+		if(status=="success"){
+
+			//console.log(data)
+
+			$(".cart_items").html(data)
+
+		}
+	});
+
 })
