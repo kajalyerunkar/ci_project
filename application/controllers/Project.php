@@ -150,7 +150,7 @@
 
 				// print_r($val);
 
-				$str = $str ."<div class='col-sm-4'><div class='product-image-wrapper'><div class='single-products'><div class='productinfo text-center'><img src='".base_url().$val->p_imgpath."' alt='' /><h2>".$val->p_amt."</h2><p>".$val->p_name."</p><a href='#' class='btn btn-default add-to-cart'><i class='fa fa-shopping-cart'></i>Add to cart</a></div><div class='product-overlay'><div class='overlay-content'><h2>$56</h2><p>Easy Polo Black Edition</p><a href='#' class='btn btn-default add-to-cart' for='".$val->p_id."'><i class='fa fa-shopping-cart'></i>Add to cart</a></div></div></div><div class='choose'><ul class='nav nav-pills nav-justified'><li><a href='#'><i class='fa fa-plus-square'></i>Add to wishlist</a></li><li><a href='#'><i class='fa fa-plus-square'></i>Add to compare</a></li></ul></div></div></div>";
+				$str = $str ."<div class='col-sm-4'><div class='product-image-wrapper'><div class='single-products'><div class='productinfo text-center'><img src='".base_url().$val->p_imgpath."' alt='' /><h2>".$val->p_amt."</h2><p>".$val->p_name."</p><a href='#' class='btn btn-default delete-to-cart'><i class='fa fa-shopping-cart'></i>Delete</a></div><div class='product-overlay'><div class='overlay-content'><h2>$56</h2><p>Easy Polo Black Edition</p><a href='#' class='btn btn-default delete-to-cart' for='".$val->p_id."'><i class='fa fa-shopping-cart'></i>Delete</a></div></div></div><div class='choose'><ul class='nav nav-pills nav-justified'><li><a href='#'><i class='fa fa-plus-square'></i>Add to wishlist</a></li><li><a href='#'><i class='fa fa-plus-square'></i>Add to compare</a></li></ul></div></div></div>";
 			}
 			echo $str;
 		}
@@ -159,7 +159,27 @@
 			echo "no product in cart";
 	}
 }
+		
+		function deletecart()
+		{
+			//print_r($_POST);
+			$id =$_POST['proid'];
+			//echo $id;
+			$cookiedata = get_cookie("cartproduct");
+			//echo $cookiedata;
+			$result = explode(",", $cookiedata);
+			//print_r($result);
+			$pos = array_search($id, $result);
+			//echo $pos;
+			unset($result[$pos]);
 
+			$newpro = implode(",", $result);
+			//echo $newpro;
+			set_cookie("cartproduct",$newpro,time()+3600,"","/");
+			$msg ="product updated";
+			$cnt = count($result);
+			echo $cnt."#".$msg;
+		}
 }
 
 ?>
