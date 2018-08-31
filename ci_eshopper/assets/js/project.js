@@ -23,7 +23,7 @@ $(document).ready(function(){
 	$.get(curl+ "get_brands", function(data, status){
 
 		
-		console.log(status)
+		//console.log(status)
 		if(status=="success"){
 
 			//console.log(data)
@@ -103,5 +103,35 @@ $(document).ready(function(){
 
 		}
 	});
+
+	$(document).on("click",".delete-to-cart",function(obj){
+		if(confirm("want to delete")){
+			curele = $(this);
+			obj.preventDefault();
+			id = $(this).attr("for");
+		}
+
+		//alert(id);
+		$.ajax({
+			type:"post",
+			data:"proid="+id+"&x=10",
+			url: curl+"deletecart",
+			success:function(response){
+
+				//console.log(response);
+
+				rans = response.split("#")
+				$(".cartcnt").html(rans[0])
+				localStorage.cartcnt = rans[0];
+				//alert(rans[1]);
+
+				curele.parent().parent().parent().parent().fadeOut(1000)
+				
+
+			}
+		})
+
+
+	})
 
 })
