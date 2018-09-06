@@ -132,6 +132,38 @@ $(document).ready(function(){
 		})
 
 
+	});
+
+	$("#register_form").submit(function(obj){
+		obj.preventDefault();
+		//alert("submitted");
+
+		$.ajax({
+			type:"post",
+			data:$(this).serialize(),
+			url:curl+ "registerAction",
+			success:function(response){
+
+				//console.log(response)
+				$(".err_register").html(response);
+			}
+		})
+	})
+
+	$("#login_form").submit(function(obj){
+		obj.preventDefault();
+		//alert("submitted");
+
+		$.ajax({
+			type:"post",
+			data:$(this).serialize(),
+			url:curl+ "loginAction",
+			success:function(response){
+
+				//console.log(response)
+				$(".err_login").html(response);
+			}
+		})
 	})
 
 })
