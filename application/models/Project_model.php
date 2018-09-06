@@ -50,6 +50,11 @@
 				return 0;
 			}
 		}
+
+		function insertData($table,$data){
+			
+			return $this ->db->insert($table,$data);
+		}
 	}
 
 ?>

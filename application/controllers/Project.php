@@ -180,6 +180,54 @@
 			$cnt = count($result);
 			echo $cnt."#".$msg;
 		}
+
+		function registerAction(){
+			//print_r($_POST);
+
+			$this->form_validation->set_rules('login_name','User name','trim|required|min_length[3]|alpha_numeric_spaces');
+
+			$this->form_validation->set_rules('login_mobile','User mobile','trim|required|regex_match[/^[1-9][0-9]{9}$/]');
+
+			$this->form_validation->set_rules('login_email','User email','trim|required|valid_email|is_unique[login.login_email]');
+
+			$this->form_validation->set_rules('login_password','User password','trim|required|alpha_numeric|min_length[4]|max_length[12]');
+
+			$this->form_validation->set_rules('login_cpassword','Password Confirmation','required|matches[login_password]');
+
+			if($this->form_validation ->run() == false){
+				echo validation_errors();
+			}
+			else{
+				//echo "ohk";
+
+				$this ->load->model('project_model');
+				$_POST['login_password']=do_hash($_POST['login_password']);
+				unset($_POST['login_cpassword']);
+				print_r($_POST);
+				$ans = $this->project_model->insertData("login",$_POST);
+				if($ans){
+					echo "User Added";
+				}
+			}
+		}
+
+		function loginAction(){
+			//print_r($_POST);
+
+			$this->form_validation->set_rules('login_email','User email','trim|required|valid_email');
+
+			$this->form_validation->set_rules('login_password','User password','trim|required|alpha_numeric|min_length[4]|max_length[12]');
+
+			if($this->form_validation->run() == false ){
+				echo validation_errors();
+			}
+			else{
+				echo "successful";
+			}
+
+		}
+
+
 }
 
 ?>
