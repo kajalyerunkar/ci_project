@@ -4,6 +4,13 @@
 
 	class Project extends CI_Controller{
 
+	public function __construct(){
+
+		parent::__construct();
+		$this->load->model('project_model');
+		header('Access-Control-Allow-Origin: *');
+	}
+
 	public function index(){
 
 		$this->load->view('index');
@@ -200,15 +207,34 @@
 			else{
 				//echo "ohk";
 
-				$this ->load->model('project_model');
 				$_POST['login_password']=do_hash($_POST['login_password']);
 				unset($_POST['login_cpassword']);
-				print_r($_POST);
+				//print_r($_POST);
 				$ans = $this->project_model->insertData("login",$_POST);
 				if($ans){
+
+					// $this->email->set_mailtype("html");
+					// $this->email->from('vishal@php-training.in','vishal');
+					// $this->email->to($_POST['log_email']);
+
+					// $this->email->subject('Email Test');
+					// $base = base_url();
+					// $msg = "<a href='".$base."index.php/project/verifyAccount/1/$ans'>Verify</a>";
+					// $this->email->message($msg);
+
+					// $re->$this->email->send();
+
 					echo "User Added";
+
 				}
 			}
+		}
+
+		function verifyAccount(){
+
+			$this->project_model->update_status($status,$id);
+
+			redirect("http://localhost/ci_eshopper/login.html");
 		}
 
 		function loginAction(){
@@ -222,11 +248,66 @@
 				echo validation_errors();
 			}
 			else{
-				echo "successful";
+				//echo "successful";
+				//print_r($_POST);
+				$_POST['login_password']= do_hash($_POST['login_password']);
+				if($this->project_model->auth($_POST)){
+
+					//echo "valid";
+					$ans_users = $this->project_model->getuserdata($_POST['login_email']);
+
+					//print_r($ans_users);
+					//$_SESSION[xyz]=111;
+					if($ans_users[0]['login_status']== 0){
+
+						echo "verify your Account";
+
+					}
+					else{
+
+						$this->session->set_userdata("login_id",$ans_users[0]['login_id']);
+
+						$this->session->set_userdata("login_name",$ans_users[0]['login_name']);
+
+						$this->session->set_userdata("login_mobile",$ans_users[0]['login_mobile']);
+
+						$this->session->set_userdata("login_email",$ans_users[0]['login_email']);
+
+						$this->session->set_userdata("login_status",$ans_users[0]['login_status']);
+
+						echo "ok#".$ans_users[0]['login_status']."#".$ans_users[0]['login_name'];
+					}
+					
+				}
+				else{
+					echo "invalid";
+				}
+
 			}
 
 		}
 
+		function logout(){
+			$this->session->unset_userdata("login_id");
+			$this->session->unset_userdata("login_name");
+			$this->session->unset_userdata("login_email");
+			$this->session->unset_userdata("login_mobile");
+			$this->session->unset_userdata("login_status");
+			$this->session->sess_destroy();
+			redirect("http://localhost/ci_eshopper/index.html");
+		}
+
+		function check_users(){
+
+			if(!$this->session->userdata("login_id") && $this->session->userdata("login_id")==""){
+				echo 0;
+			}
+
+			else{
+
+				echo 1;
+			}
+		}
 
 }
 

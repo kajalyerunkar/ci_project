@@ -54,6 +54,42 @@
 		function insertData($table,$data){
 			
 			return $this ->db->insert($table,$data);
+			return $this->db->insert_id();
+		}
+
+		function auth($data){
+
+			//print_r($data);
+			$result = $this->db->select("login_password")->get_where("login",array("login_email"=>$data['login_email']))->result_array();
+
+			//print_r($result);
+
+			if(count($result)>0){
+
+				if($data['login_password'] == $result[0]['login_password']){
+
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+
+				return false;
+			}
+		}
+
+		function getuserdata($email){
+
+			return $this->db->get_where("login",array("login_email"=>$email))->result_array();
+		}
+
+		function update_status($status, $id){
+
+			$this->db->where("login_id",$id);
+			$data = array("login_status"=>$status);
+			$this->db->update("login",$data);
 		}
 	}
 
