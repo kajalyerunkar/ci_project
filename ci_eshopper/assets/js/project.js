@@ -1,5 +1,26 @@
 $(document).ready(function(){
 
+	$.get(curl+"check_users", function(data , status){
+
+		console.log(data)
+		if(data == 0){
+
+			console.log(localStorage)
+			localStorage.removeItem("username");
+			localStorage.removeItem("userstatus");
+			var link = "<li><a href='login.html'><i class='fa fa-lock'></i>login</a></li>"
+		}
+
+		else{
+
+			uname = localStorage.username
+			ustatus = localStorage.userstatus
+			var link = "<li><a href='"+curl+"logout'><i class= 'fa fa-lock'></i>logout("+uname+")</a></li>";
+		}
+
+		$('#links').html(link)
+	});
+
 	if(localStorage.cartcnt){
 
 		$(".cartcnt").html(localStorage.cartcnt)
@@ -160,10 +181,23 @@ $(document).ready(function(){
 			url:curl+ "loginAction",
 			success:function(response){
 
-				//console.log(response)
-				$(".err_login").html(response);
+				// console.log(response)
+				//ok#1
+				ans = response.split("#")
+				if(ans[0]== "ok"){
+					//console.log(ans[2])
+					//console.log(ans[1])
+					//console.log(ans[0])
+					localStorage.setItem("userstatus",ans[1])
+					localStorage.setItem("username",ans[2])
+					window.location.href = "index.html"
+				}
+				else{
+						$(".err_login").html(response);
+				}
 			}
 		})
-	})
+	});
+
 
 })
