@@ -1,26 +1,5 @@
 $(document).ready(function(){
 
-	$.get(curl+"check_users", function(data , status){
-
-		console.log(data)
-		if(data == 0){
-
-			console.log(localStorage)
-			localStorage.removeItem("username");
-			localStorage.removeItem("userstatus");
-			var link = "<li><a href='login.html'><i class='fa fa-lock'></i>login</a></li>"
-		}
-
-		else{
-
-			uname = localStorage.username
-			ustatus = localStorage.userstatus
-			var link = "<li><a href='"+curl+"logout'><i class= 'fa fa-lock'></i>logout("+uname+")</a></li>";
-		}
-
-		$('#links').html(link)
-	});
-
 	if(localStorage.cartcnt){
 
 		$(".cartcnt").html(localStorage.cartcnt)
@@ -29,6 +8,29 @@ $(document).ready(function(){
 
 		$(".cartcnt").html(0);
 	}
+
+	$.get(curl+"check_users", function(data , status){
+
+		console.log(data)
+		if(data == 0){
+
+			console.log(localStorage)
+			localStorage.removeItem("username");
+			localStorage.removeItem("userstatus");
+			var link = "<li><a href='cart.html'>Cart(<span class='cartcnt'></span>)</a></li><li><a href='login.html'><i class='fa fa-lock'></i>login</a></li>"
+		}
+
+		else{
+
+			uname = localStorage.username
+			ustatus = localStorage.userstatus
+			var link = "<li><a href='cart.html'>Cart(<span class='cartcnt'></span>)</a></li><li><a href='change_password.html'>password</a></li><li><a href='"+curl+"logout'><i class= 'fa fa-lock'></i>logout("+uname+")</a></li>";
+		}
+
+		$('#links').html(link)
+	});
+
+	
 
 	//console.log(curl)
 
@@ -198,6 +200,24 @@ $(document).ready(function(){
 			}
 		})
 	});
+
+	$("#changepass_form").submit(function(obj){
+		obj.preventDefault();
+
+		$.ajax({
+			type:"post",
+			data:$(this).serialize(),
+			url:curl+ "updateAction",
+			success:function(response){
+
+				 console.log(response)
+				//ok#1
+						$(".err_update").html(response);
+		
+			}
+		})
+
+	})
 
 
 })
