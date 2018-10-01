@@ -91,6 +91,25 @@
 			$data = array("login_status"=>$status);
 			$this->db->update("login",$data);
 		}
+
+		function check_cpass($data,$id){
+
+			
+			$ans=$this->db->select("login_password")->get_where("login",array("login_id"=>$id))->result_array();
+			//print_r($ans);
+			
+			return ($ans[0]['login_password'] == $data)?true:false;
+
+		}
+
+		function update_cpass($pass,$id){
+
+			$data = array(
+				"login_password"=>$pass);
+
+			$this->db->where("login_id",$id);
+			return $this->db->update("login", $data);
+		}
 	}
 
 ?>

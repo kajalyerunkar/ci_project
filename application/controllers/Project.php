@@ -39,10 +39,18 @@
 
 		$this->load->model('project_model');
 
-		$ans = $this->project_model->getRecords("categories");
+		$ans = $this->project_model->getRecords("category");
 
 		if(is_array($ans)){
-			echo json_encode($ans);
+			$str="";
+			//echo json_encode($ans);
+			foreach($ans as $val){
+
+				// print_r($val);
+
+				$str = $str ."<li><a href='#' class='ca_data' for='".$val->ca_id."'>".$val->ca_name."</a></li>";
+			}
+			echo $str;
 		}
 	}
 
@@ -309,6 +317,115 @@
 			}
 		}
 
-}
+
+		function updateAction(){
+
+			//print_r($_POST);
+
+			$this->form_validation->set_rules('old_pass','User password','trim|required|alpha_numeric|min_length[4]|max_length[12]');
+
+			$this->form_validation->set_rules('new_pass','User password','trim|required|alpha_numeric|min_length[4]|max_length[12]');
+
+			$this->form_validation->set_rules('cnew_pass','Password Confirmation','required|matches[new_pass]');
+
+			if($this->form_validation->run()==false){
+				echo validation_errors();
+			}
+
+			else if
+
+				//print_r($_POST);
+				($_POST['old_pass']==$_POST['new_pass']){
+					echo "new password is same as old password";
+				}
+				else{
+
+					$current =do_hash($_POST['old_pass']);
+					$new = do_hash($_POST['new_pass']);
+					
+					
+					if($this->project_model->check_cpass($current,$this->session->userdata('login_id'))){
+						if($this->project_model->update_cpass($new,$this->session->userdata('login_id'))){
+
+							echo "password updated";
+						}
+					}
+
+				}
+
+				
+		}
+
+		function category_action(){
+			$data = $this->input->post('ca_name');
+			print_r($data);
+
+			if(empty($data)){
+
+				echo "please enter category";
+			}
+
+			else{
+
+				if($this->project_model->insertData("category",$_POST))
+				{
+					echo "category added";
+				}
+			}
+			//print_r($_POST);
+
+		}
+		
+
+		function project_action(){
+
+			print_r($_FILES);
+			print_r($_POST);
+		}
+
+		public function get_brands_option(){
+
+		$this->load->model('project_model');
+
+		$ans = $this->project_model->getRecords("brand");
+
+		if(is_array($ans)){
+			$str="";
+			$str=$str."<option value = ''>please select brands</option>";
+			foreach($ans as $val){
+
+				// print_r($val);
+
+				$str = $str ."<option value='".$val->br_id."'>".$val->br_name."</option>";
+			}
+			echo $str;
+		}
+	}
+
+
+	public function get_category_option(){
+
+		$this->load->model('project_model');
+
+		$ans = $this->project_model->getRecords("category");
+
+		if(is_array($ans)){
+			$str="";
+			$str=$str."<option value = ''>please select category</option>";
+			foreach($ans as $val){
+
+				// print_r($val);
+
+				$str = $str ."<option value='".$val->ca_id."'>".$val->ca_name."</option>";
+			}
+			echo $str;
+		}
+	}
+
+	}
+			
+
+
+
 
 ?>
