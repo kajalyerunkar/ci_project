@@ -11,20 +11,20 @@ $(document).ready(function(){
 
 	$.get(curl+"check_users", function(data , status){
 
-		console.log(data)
+		//console.log(data)
 		if(data == 0){
 
-			console.log(localStorage)
+			//console.log(localStorage)
 			localStorage.removeItem("username");
 			localStorage.removeItem("userstatus");
-			var link = "<li><a href='cart.html'>Cart(<span class='cartcnt'></span>)</a></li><li><a href='login.html'><i class='fa fa-lock'></i>login</a></li>"
+			var link = "<li><a href='cart.html'>Cart(<span class='cartcnt'></span>)</a></li><li><a href='forgot_password.html'>forgot password</a></li><li><a href='login.html'><i class='fa fa-lock'></i>login</a></li>"
 		}
 
 		else{
 
 			uname = localStorage.username
 			ustatus = localStorage.userstatus
-			var link = "<li><a href='cart.html'>Cart(<span class='cartcnt'></span>)</a></li><li><a href='change_password.html'>password</a></li><li><a href='"+curl+"logout'><i class= 'fa fa-lock'></i>logout("+uname+")</a></li>";
+			var link = "<li><a href='cart.html'>Cart(<span class='cartcnt'></span>)</a></li><li><a href='add_category.html'>category</a></li><li><a href='add_product.html'>product</a></li><li><a href='change_password.html'>password</a></li><li><a href='"+curl+"logout'><i class= 'fa fa-lock'></i>logout("+uname+")</a></li>";
 		}
 
 		$('#links').html(link)
@@ -39,7 +39,7 @@ $(document).ready(function(){
 		//console.log(status)
 		if(status=="success"){
 
-			//console.log(JSON.parse(data))
+			$(".category_data").html(data)
 		}
 	});
 
@@ -207,7 +207,7 @@ $(document).ready(function(){
 		$.ajax({
 			type:"post",
 			data:$(this).serialize(),
-			url:curl+ "updateAction",
+			url:curl+"updateAction",
 			success:function(response){
 
 				 console.log(response)
@@ -218,6 +218,67 @@ $(document).ready(function(){
 		})
 
 	})
+
+	$("#form3,#form2").hide();
+	
+	$(".btn-forgot1").click(function(){
+		// alert(1)
+		$.ajax({
+
+			type:"post",
+			data:$("#forgot1_form").serialize(),
+			url:curl+"forgot1_action",
+			success:function(response){
+				if(response=="ok"){
+
+					$("#form1,#form2").slideToggle();
+				}
+				else{
+
+					$(".err_forgot1").html(response);
+				}
+			}
+		})
+				
+	});
+
+	$(".btn-category").click(function(){
+		//alert(1);
+		//alert(curl)
+		$.ajax({
+
+			type:"post",
+			data:$("#category_form").serialize(),
+			url:curl+"category_action",
+			success:function(response){
+				//console.log(response);
+				$(".err_category").html(response);
+			}
+		})
+	})
+
+
+	$.get(curl+ "get_category_option", function(data, status){
+
+		//console.log(status)
+		if(status=="success"){
+
+			$("#p_caid").html(data)
+		}
+	});
+
+	$.get(curl+ "get_brands_option", function(data, status){
+
+		
+		//console.log(status)
+		if(status=="success"){
+
+			//console.log(data)
+
+			$("#p_brid").html(data)
+
+		}
+	});
 
 
 })
