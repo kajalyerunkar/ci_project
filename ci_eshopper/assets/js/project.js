@@ -280,5 +280,26 @@ $(document).ready(function(){
 		}
 	});
 
+	// add product by ajax
+	$(".btn-product").click(function(){
+
+		var formobj = document.getElementById("form_data");
+		var formDataobj = new FormData(formobj);
+		//alert(1)
+		$.ajax({
+
+			type:"post",
+			data:formDataobj,
+			contentType:false,
+			processData:false,
+			url:curl+"product_action",
+			success:function(response){
+				//console.log(response);
+					$(".err_product2").html(response);
+			}
+		})
+				
+	});
+
 
 })

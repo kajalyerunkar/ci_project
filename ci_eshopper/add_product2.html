@@ -155,7 +155,7 @@
         <div class="col-sm-4 col-sm-offset-1">
           <div class="login-form"><!--login form-->
             <h2>Login to your account</h2>
-            <form method="post" action="http://localhost/kajal_ci/index.php/project/product_action" enctype="multipart/form-data">
+            <form id="form_data">
               <input placeholder="Enter product name" type="text" name="p_name">
              <input placeholder="Enter product amount" type="text" name="p_amt">
              <input placeholder="Enter product discount" type="text" name="p_discount">
@@ -172,9 +172,9 @@
                </option>
              </select><br><br>
              <textarea placeholder="enter description" name="p_desc"></textarea>
-              <button type="submit" class="btn btn-default">Add product</button>
+              <button type="button" class="btn btn-default btn-product">Add product</button>
             </form>
-            <div class="err_product"></div>
+            <div class="err_product2"></div>
           </div><!--/login form-->
         </div>
         
