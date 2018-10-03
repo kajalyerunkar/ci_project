@@ -377,10 +377,50 @@
 		}
 		
 
-		function project_action(){
+		function product_action(){
 
-			print_r($_FILES);
-			print_r($_POST);
+			//pre($_FILES);
+			//pre($_POST);
+
+
+			$this->form_validation->set_rules('p_name','product name','trim|required|regex_match[/^[a-zA-Z0-9][a-zA-Z0-9_\.]+[a-zA-Z0-9]$/]');
+			$this->form_validation->set_rules('p_amt','product amount','trim|required|numeric');
+			$this->form_validation->set_rules('p_amt','product discount','trim|required|integer');
+			$this->form_validation->set_rules('p_caid','category name','trim|required');
+			$this->form_validation->set_rules('p_brid','brand name','trim|required');
+			$this->form_validation->set_rules('p_desc','product description','trim|required|regex_match[/^[a-zA-Z0-9][a-zA-Z0-9_\.]+[a-zA-Z0-9]$/]');
+			if($this->form_validation->run()==false){
+				echo validation_errors();
+			}
+			else{
+
+				//echo "ohk";
+				$config['upload_path']          = './assets/uploads/';
+                $config['allowed_types']        = 'gif|jpg|png';
+                $config['max_size']             = 2048;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768;
+                $config['remove_space']         = TRUE;
+                $config['file_ext_tolower']     = TRUE;
+
+
+                $this->upload->initialize($config);
+                $unique =rand(1000,999).time();
+                $_FILES['p_file']['name'] = $unique.$_FILES['p_file']['name'];
+
+                if ( ! $this->upload->do_upload('p_file'))
+                {
+                         $err=$this->upload->display_errors();
+
+                        pre($err);
+                }
+                else
+                {
+                        echo "ok";
+                }
+			}
+
+
 		}
 
 		public function get_brands_option(){
