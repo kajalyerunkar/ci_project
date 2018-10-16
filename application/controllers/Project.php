@@ -67,7 +67,7 @@
 
 				// print_r($val);
 
-				$str = $str ."<div class='col-sm-4'><div class='product-image-wrapper'><div class='single-products'><div class='productinfo text-center'><img src='".base_url().'assets/uploads/'.$val->p_imgpath."' alt='' /><h2>".$val->p_amt."</h2><p>".$val->p_name."</p><a href='#' class='btn btn-default add-to-cart'><i class='fa fa-shopping-cart'></i>Add to cart</a></div><div class='product-overlay'><div class='overlay-content'><h2>$56</h2><p>Easy Polo Black Edition</p><a href='#' class='btn btn-default add-to-cart' for='".$val->p_id."'><i class='fa fa-shopping-cart'></i>Add to cart</a></div></div></div><div class='choose'><ul class='nav nav-pills nav-justified'><li><a href='#'><i class='fa fa-plus-square'></i>Add to wishlist</a></li><li><a href='#'><i class='fa fa-plus-square'></i>Add to compare</a></li></ul></div></div></div>";
+				$str = $str ."<div class='col-sm-4'><div class='product-image-wrapper'><div class='single-products'><div class='productinfo text-center'><img src='".base_url().'assets/uploads/'.$val->p_imgpath."' alt='' /><h2>".$val->p_amt."</h2><p>".$val->p_name."</p><a href='#' class='btn btn-default add-to-cart'><i class='fa fa-shopping-cart'></i>Add to cart</a></div><div class='product-overlay'><div class='overlay-content'><h2>$56</h2><p>Easy Polo Black Edition</p><a href='#' class='btn btn-default add-to-cart' for='".$val->p_id."'><i class='fa fa-shopping-cart'></i>Add to cart</a></div></div></div><div class='choose'><ul class='nav nav-pills nav-justified'><li><a href='#' class='add-to-wishlist' for='".$val->p_id."'><i class='fa fa-plus-square'></i>Add to wishlist</a></li><li><a href='#'><i class='fa fa-plus-square'></i>Add to compare</a></li></ul></div></div></div>";
 			}
 			echo $str;
 		}
@@ -173,6 +173,38 @@
 		echo $cnt."#".$msg;
 	}
 
+	public 	function wishlist(){
+
+		//echo "TEST";
+
+		//print_r($_POST);
+		$p_id =$_POST['proid'];
+		if(!$this->session->userdata("login_id") && $this->session->userdata("login_id")==""){
+				echo "please login";
+			}
+
+			else{
+
+				$u_id =$this->session->userdata("login_id");
+				// echo $u_id;
+
+				$ans = $this->project_model->check_count_wishlist($p_id,$u_id);
+
+				// print_r($ans);
+				if($ans == 0){
+					$ans = $this->project_model->insertwishData("wishlist",array("p_id"=>$p_id,"u_id"=>$u_id));
+					echo "added";
+				}	
+				else{
+					echo "Prod exists";
+				}
+				// 
+			}
+
+
+		
+	}
+
 	public function get_cart_products(){
 
 		if(get_cookie("cartproduct") && get_cookie("cartproduct")!=""){
@@ -189,7 +221,8 @@
 
 			foreach($ans as $val){
 
-				// print_r($val);
+				 //print_r($val);
+				 //echo base_url();
 
 				$str = $str ."<div class='col-sm-4'><div class='product-image-wrapper'><div class='single-products'><div class='productinfo text-center'><img src='".base_url().$val->p_imgpath."' alt='' /><h2>".$val->p_amt."</h2><p>".$val->p_name."</p><a href='#' class='btn btn-default delete-to-cart'><i class='fa fa-shopping-cart'></i>Delete</a></div><div class='product-overlay'><div class='overlay-content'><h2>$56</h2><p>Easy Polo Black Edition</p><a href='#' class='btn btn-default delete-to-cart' for='".$val->p_id."'><i class='fa fa-shopping-cart'></i>Delete</a></div></div></div><div class='choose'><ul class='nav nav-pills nav-justified'><li><a href='#'><i class='fa fa-plus-square'></i>Add to wishlist</a></li><li><a href='#'><i class='fa fa-plus-square'></i>Add to compare</a></li></ul></div></div></div>";
 			}

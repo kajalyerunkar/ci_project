@@ -57,6 +57,8 @@
 			return $this->db->insert_id();
 		}
 
+
+
 		function auth($data){
 
 			//print_r($data);
@@ -109,6 +111,21 @@
 
 			$this->db->where("login_id",$id);
 			return $this->db->update("login", $data);
+		}
+
+		function insertwishData($table,$data){
+			
+			return $this ->db->insert($table,$data);
+			//return $this->db->insert_id();
+		}
+
+		function check_count_wishlist($pid,$uid){
+			
+			$this->db->where("p_id",$pid);
+			$this->db->where("u_id",$uid);
+			return $this->db->count_all_results("wishlist");
+
+
 		}
 	}
 

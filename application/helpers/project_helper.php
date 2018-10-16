@@ -5,6 +5,7 @@
 		function url(){
 
 			return base_url();
+			//echo base_url();
 		}
 	}
 
