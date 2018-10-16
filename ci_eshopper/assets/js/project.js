@@ -113,6 +113,31 @@ $(document).ready(function(){
 
 	})
 
+	$(document).on("click",".add-to-wishlist",function(aobj){
+
+		aobj.preventDefault();
+		var id= $(this).attr("for");
+		alert(id);
+
+		//alert("p_id="+id)
+		$.ajax({
+			type:"post",
+			data:"proid="+id,
+			url: curl+"wishlist",
+			success:function(response){
+
+				alert(response);
+				//$(".features_items").html(response)
+				// rans = response.split("#")
+				// $(".cartcnt").html(rans[0])
+				// localStorage.cartcnt = rans[0];
+				// alert(rans[1]);
+
+			}
+		})
+
+	})
+
 	//cart check
 
 	$.get(curl+ "get_cart_products", function(data, status){
